@@ -40,7 +40,6 @@ function Game() {
 
   this.checkEndGame = function() {
     const { x, y } = this.snake.getLastTile();
-    console.log(x * cellSize >= totalWidth, x, cellSize, totalWidth);
     if (
       x < 0 || x * cellSize >= totalWidth ||
       y < 0 || y * cellSize >= totalHeight
