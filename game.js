@@ -6,18 +6,7 @@ const cellSize = 15;
 const totalWidth = 500;
 const totalHeight = 300;
 
-const gameSpeed = 2000;
-
-// Border
-// ctx.strokeRect(0, 0, totalWidth, totalHeight);
-
-// Cells
-// for (let i = 0; i < totalWidth; i += cellSize) {
-//   ctx.strokeRect(i, 0, 1, totalHeight);
-// }
-// for (let i = 0; i < totalHeight; i += cellSize) {
-//   ctx.strokeRect(0, i, totalWidth, 1);
-// }
+const gameSpeed = 250;
 
 function Snake() {
   this.tiles = [
@@ -30,7 +19,6 @@ function Snake() {
   this.moveY = 0;
 }
 
-
 function render(snake) {
   ctx.clearRect(0, 0, totalWidth, totalHeight);
   snake.tiles.forEach(tile => {
@@ -40,7 +28,14 @@ function render(snake) {
 }
 
 function update(snake) {
-
+  console.log('update');
+  const lastTile = snake.tiles[snake.tiles.length - 1];
+  const newTile = {
+    x: lastTile.x + snake.moveX,
+    y: lastTile.y + snake.moveY,
+  }
+  snake.tiles.push(newTile);
+  snake.tiles.shift();
 }
 
 function gameTick(snake) {
