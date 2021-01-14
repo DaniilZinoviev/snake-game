@@ -18,26 +18,48 @@ function Snake() {
   ];
   this.moveX = 1;
   this.moveY = 0;
+
+  this.getLastTile = function() {
+    return this.tiles[ this.tiles.length - 1 ];
+  }
+
+  this.move = function() {
+    const lastTile = this.getLastTile();
+    const newTile = {
+      x: lastTile.x + this.moveX,
+      y: lastTile.y + this.moveY,
+    };
+    this.tiles.push(newTile);
+    this.tiles.shift();
+  }
 }
 
 function Game() {
   this.snake = new Snake();
   this.initialized = false;
 
+  this.checkEndGame = function() {
+    const { x, y } = this.snake.getLastTile();
+    console.log(x * cellSize >= totalWidth, x, cellSize, totalWidth);
+    if (
+      x < 0 || x * cellSize >= totalWidth ||
+      y < 0 || y * cellSize >= totalHeight
+    ) {
+      this.end();
+    }
+  }
+
   this.update = function () {
-    console.log("run update");
+    // console.log("run update");
     // Update snake position
-    const lastTile = this.snake.tiles[this.snake.tiles.length - 1];
-    const newTile = {
-      x: lastTile.x + this.snake.moveX,
-      y: lastTile.y + this.snake.moveY,
-    };
-    this.snake.tiles.push(newTile);
-    this.snake.tiles.shift();
+    this.snake.move();
+    
+    // Check end game
+    this.checkEndGame();
   };
 
   this.render = function () {
-    console.log("run render");
+    // console.log("run render");
     ctx.clearRect(0, 0, totalWidth, totalHeight);
     this.snake.tiles.forEach((tile) => {
       ctx.fillRect(tile.x * cellSize, tile.y * cellSize, cellSize, cellSize);
@@ -74,12 +96,17 @@ function Game() {
     }
   }
 
+  this.end = function() {
+    clearInterval(this.interval);
+    alert('The game has ended.')
+  }
+
   this.init = function () {
     if (this.initialized) {
       return console.log("The game was initialized yet!");
     }
     console.log("Game init was started.");
-    setInterval(() => this.tick(), gameSpeed);
+    this.interval = setInterval(() => this.tick(), gameSpeed);
     this.tick();
 
     window.addEventListener('keydown', (e) => {
