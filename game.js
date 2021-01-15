@@ -2,11 +2,13 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 ctx.lineWidth = 1;
-const cellSize = 10;
+const cellSize = 15;
 const totalWidth = 500;
 const totalHeight = 300;
+const snakeColor = '#000';
+const appleColor = '#235621';
 
-const gameSpeed = 50;
+const gameSpeed = 100;
 
 function Snake() {
   // Defaults
@@ -23,26 +25,42 @@ function Snake() {
     return this.tiles[ this.tiles.length - 1 ];
   }
 
-  this.move = function() {
+  /**
+   * 
+   * @param {Array<Apple>} apples 
+   */
+  this.move = function(apples) {
     const lastTile = this.getLastTile();
     const newTile = {
       x: lastTile.x + this.moveX,
       y: lastTile.y + this.moveY,
     };
     this.tiles.push(newTile);
-    this.tiles.shift();
+
+    const canEatApple = apples.some(({x, y}) => x === lastTile.x && y === lastTile.y);
+    if (!canEatApple) {
+      this.tiles.shift();
+    }
   }
+}
+
+function Apple({x, y}) {
+  this.x = x;
+  this.y = y;
 }
 
 function Game() {
   this.snake = new Snake();
+  this.apples = [];
   this.initialized = false;
+  this.totalRows = Math.floor(totalWidth / cellSize);
+  this.totalCols = Math.floor(totalHeight / cellSize);
 
   this.checkEndGame = function() {
     const { x, y } = this.snake.getLastTile();
     if (
-      x < 0 || x * cellSize >= totalWidth ||
-      y < 0 || y * cellSize >= totalHeight
+      x < 0 || x >= this.totalRows ||
+      y < 0 || y >= this.totalCols
     ) {
       this.end();
     }
@@ -50,8 +68,21 @@ function Game() {
 
   this.update = function () {
     // console.log("run update");
+    // Create apples
+    if (this.apples.length === 0) {
+      const x = Math.floor(Math.random() * this.totalRows);
+      const y = Math.floor(Math.random() * this.totalCols);
+      this.apples.push(new Apple({x, y}))
+    }
+
     // Update snake position
-    this.snake.move();
+    this.snake.move(this.apples);
+
+    // Check that snake can eat apples
+    const tile = this.snake.getLastTile();
+    this.apples = this.apples.filter(({x, y}) => {
+      return x !== tile.x || y !== tile.y;
+    });
     
     // Check end game
     this.checkEndGame();
@@ -60,7 +91,12 @@ function Game() {
   this.render = function () {
     // console.log("run render");
     ctx.clearRect(0, 0, totalWidth, totalHeight);
+    this.apples.forEach(({x, y}) => {
+      ctx.fillStyle = appleColor;
+      ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+    })
     this.snake.tiles.forEach((tile) => {
+      ctx.fillStyle = snakeColor;
       ctx.fillRect(tile.x * cellSize, tile.y * cellSize, cellSize, cellSize);
     });
   };
