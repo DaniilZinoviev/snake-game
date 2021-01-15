@@ -5,8 +5,8 @@ ctx.lineWidth = 1;
 const cellSize = 15;
 const totalWidth = 500;
 const totalHeight = 300;
-const snakeColor = '#000';
-const appleColor = '#235621';
+const snakeColor = '#235621';
+const appleColor = '#aa0000';
 
 const gameSpeed = 100;
 
@@ -37,7 +37,8 @@ function Snake() {
     };
     this.tiles.push(newTile);
 
-    const canEatApple = apples.some(({x, y}) => x === lastTile.x && y === lastTile.y);
+    const canEatApple = apples.some(({x, y}) => x === newTile.x && y === newTile.y);
+    console.log(`canEatApple = ${canEatApple}`)
     if (!canEatApple) {
       this.tiles.shift();
     }
@@ -111,9 +112,8 @@ function Game() {
   };
 
   this.updateSnakeDirection = function(key) {
-    console.log(key);
+    // [x, y]
     const keyMap = {
-      // [x, y]
       ArrowDown:  [0, 1],
       KeyS:       [0, 1],
       ArrowUp:    [0, -1],
@@ -123,7 +123,6 @@ function Game() {
       ArrowLeft:  [-1, 0],
       KeyA:       [-1, 0],
     }
-
     if (keyMap[key]) {
       const [x, y] = keyMap[key];
       this.snake.moveX = x;
@@ -133,7 +132,7 @@ function Game() {
 
   this.end = function() {
     clearInterval(this.interval);
-    alert('The game has ended.')
+    alert('The game has ended.');
   }
 
   this.init = function () {
