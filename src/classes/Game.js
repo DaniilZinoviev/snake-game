@@ -1,56 +1,25 @@
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
+import { Apple, Snake } from '/';
 
-ctx.lineWidth = 1;
-const cellSize = 15;
-const totalWidth = 500;
-const totalHeight = 300;
-const snakeColor = '#235621';
-const appleColor = '#aa0000';
-
-const gameSpeed = 100;
-
-function Snake() {
-  // Defaults
-  this.tiles = [
-    {
-      x: 2,
-      y: 4,
-    },
-  ];
-  this.moveX = 1;
-  this.moveY = 0;
-
-  this.getLastTile = function() {
-    return this.tiles[ this.tiles.length - 1 ];
-  }
-
-  /**
-   * 
-   * @param {Array<Apple>} apples 
-   */
-  this.move = function(apples) {
-    const lastTile = this.getLastTile();
-    const newTile = {
-      x: lastTile.x + this.moveX,
-      y: lastTile.y + this.moveY,
-    };
-    this.tiles.push(newTile);
-
-    const canEatApple = apples.some(({x, y}) => x === newTile.x && y === newTile.y);
-    console.log(`canEatApple = ${canEatApple}`)
-    if (!canEatApple) {
-      this.tiles.shift();
-    }
-  }
-}
-
-function Apple({x, y}) {
-  this.x = x;
-  this.y = y;
-}
-
-function Game() {
+function Game(opts) {
+  const defaultOptions = {
+    cellSize: 15,
+    totalWidth: 500,
+    totalHeight: 300,
+    snakeColor: '#235621',
+    appleColor: '#aa0000',
+    gameSpeed: 100,
+    ctx: null,
+  };
+  const options = Object.assign(defaultOptions, opts);
+  const {
+    cellSize,
+    totalWidth,
+    totalHeight,
+    snakeColor,
+    appleColor,
+    gameSpeed,
+    ctx
+  } = options;
   this.snake = new Snake();
   this.apples = [];
   this.initialized = false;
@@ -151,11 +120,4 @@ function Game() {
   };
 }
 
-// function init() {
-//   const snake = new Snake();
-//   setInterval(function () { gameTick(snake); }, gameSpeed);
-//   gameTick(snake);
-// }
-
-const game = new Game();
-game.init();
+export default Game;
