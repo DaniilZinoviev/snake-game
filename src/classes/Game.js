@@ -9,6 +9,7 @@ function Game(opts) {
     appleColor: '#aa0000',
     gameSpeed: 100,
     ctx: null,
+    canMoveThroughWalls: true
   };
   const options = Object.assign(defaultOptions, opts);
   const {
@@ -18,7 +19,8 @@ function Game(opts) {
     snakeColor,
     appleColor,
     gameSpeed,
-    ctx
+    ctx,
+    canMoveThroughWalls
   } = options;
   this.snake = new Snake();
   this.apples = [];
@@ -29,11 +31,13 @@ function Game(opts) {
 
   this.checkEndGame = function() {
     const { x, y } = this.snake.getLastTile();
-    if (
-      x < 0 || x >= this.totalRows ||
-      y < 0 || y >= this.totalCols
-    ) {
-      this.end();
+    if ( ! canMoveThroughWalls ) {
+      if (
+        x < 0 || x >= this.totalRows ||
+        y < 0 || y >= this.totalCols
+      ) {
+        this.end();
+      }
     }
   }
 
@@ -55,7 +59,25 @@ function Game(opts) {
     }
 
     // Update snake position
-    this.snake.move(this.apples);
+    const next = this.snake.getNextTile();
+    if (canMoveThroughWalls) {
+      switch (true) {
+        case next.x > this.totalRows - 1:
+          next.x = 0;
+          break;
+        case next.x < 0:
+          next.x = this.totalRows;
+          break;
+        case next.y > this.totalCols - 1:
+          next.y = 0;
+          break;
+        case next.y < 0:
+          next.y = this.totalCols;
+          break;
+      }
+    }
+    this.totalRows, this.totalCols
+    this.snake.move(next, this.apples);
 
     // Check that snake can eat apples
     const tile = this.snake.getLastTile();

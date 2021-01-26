@@ -30,16 +30,21 @@ function Snake() {
     return this.tiles[ this.tiles.length - 2 ];
   }
 
-  /**
-   * 
-   * @param {Array<Apple>} apples 
-   */
-  this.move = function(apples) {
+  this.getNextTile = function() {
     const lastTile = this.getLastTile();
-    const newTile = {
+    return {
       x: lastTile.x + this.moveX,
       y: lastTile.y + this.moveY,
     };
+  }
+
+  /**
+   * 
+   * @param {Array<Apple>} apples 
+   * @param {number} rows 
+   * @param {number} cols 
+   */
+  this.move = function(newTile, apples) {
     this.tiles.push(newTile);
 
     const canEatApple = apples.some(({x, y}) => x === newTile.x && y === newTile.y);
