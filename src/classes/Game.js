@@ -95,6 +95,15 @@ function Game(opts) {
     }
     if (keyMap[key]) {
       const [x, y] = keyMap[key];
+      const head = this.snake.getLastTile();
+      const nextPosX = head.x + x;
+      const nextPosY = head.y + y;
+
+      // Check if snake will eat itself
+      const neck = this.snake.getPreLastTile();
+      if (neck && nextPosX === neck.x && nextPosY === neck.y) {
+        return;
+      }
       this.snake.moveX = x;
       this.snake.moveY = y;
     }

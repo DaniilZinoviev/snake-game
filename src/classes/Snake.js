@@ -9,8 +9,25 @@ function Snake() {
   this.moveX = 1;
   this.moveY = 0;
 
+  /**
+   * Snake's "head"
+   */
+  this.getFirstTile = function() {
+    return this.tiles[0];
+  }
+
+  /**
+   * Last tile, or Snake's "tail"
+   */
   this.getLastTile = function() {
     return this.tiles[ this.tiles.length - 1 ];
+  }
+
+  /**
+   * Last tile, or Snake's "tail"
+   */
+  this.getPreLastTile = function() {
+    return this.tiles[ this.tiles.length - 2 ];
   }
 
   /**
