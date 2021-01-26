@@ -25,6 +25,7 @@ function Game(opts) {
   this.initialized = false;
   this.totalRows = Math.floor(totalWidth / cellSize);
   this.totalCols = Math.floor(totalHeight / cellSize);
+  
 
   this.checkEndGame = function() {
     const { x, y } = this.snake.getLastTile();
@@ -100,18 +101,23 @@ function Game(opts) {
   }
 
   this.end = function() {
-    clearInterval(this.interval);
-    // alert('The game has ended.');
     console.log('The game has ended.');
+    clearInterval(this.interval);
+    document.body.classList.remove('playing');
+  }
+
+  this.start = function() {
+    console.log("Game init was started.");
+    this.interval = setInterval(() => this.tick(), gameSpeed);
+    this.tick();
+    document.body.classList.add('playing');
   }
 
   this.init = function () {
     if (this.initialized) {
       return console.log("The game was initialized yet!");
     }
-    console.log("Game init was started.");
-    this.interval = setInterval(() => this.tick(), gameSpeed);
-    this.tick();
+    this.start();
 
     window.addEventListener('keydown', (e) => {
       this.updateSnakeDirection(e.code)

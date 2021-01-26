@@ -1,3 +1,8 @@
+body {
+  &.playing {
+    overflow: hidden;
+  }
+}
 .site--wrap {
   min-height: 100vh;
   display: flex;
