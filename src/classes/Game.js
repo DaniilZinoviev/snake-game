@@ -37,12 +37,20 @@ function Game(opts) {
     }
   }
 
+  this.getAppleRandomPosition = function() {
+    const x = Math.floor(Math.random() * this.totalRows);
+    const y = Math.floor(Math.random() * this.totalCols);
+    if (this.snake.tiles.some(tile => x === tile.x && y === tile.y)) {
+      return this.getAppleRandomPosition();
+    }
+    return [x, y];
+  }
+
   this.update = function () {
-    // console.log("run update");
     // Create apples
     if (this.apples.length === 0) {
-      const x = Math.floor(Math.random() * this.totalRows);
-      const y = Math.floor(Math.random() * this.totalCols);
+      const [x, y] = this.getAppleRandomPosition();
+
       this.apples.push(new Apple({x, y}))
     }
 
