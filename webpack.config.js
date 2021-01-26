@@ -6,10 +6,21 @@ exports.default = ({ mode }) => {
     mode: 'development',
     module: {
       rules: [
+        // Scripts
         {
           test: /\.js$/,
           loader: 'babel-loader',
           exclude: /node_modules/,
+        },
+
+        // Styles
+        {
+          test: /\.s[ac]ss$/,
+          use: [
+            'style-loader',
+            'css-loader',
+            'sass-loader'
+          ]
         }
       ]
     },

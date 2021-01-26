@@ -1,0 +1,15 @@
+.site--wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  main {
+    flex-grow: 1;
+  }
+}
+canvas {
+  margin: 0 auto;
+  display: block;
+  // border: 2px solid $canvas-border-color;
+  max-width: 100%;
+  box-shadow: 0 0 5px #000;
+}

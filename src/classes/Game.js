@@ -101,7 +101,8 @@ function Game(opts) {
 
   this.end = function() {
     clearInterval(this.interval);
-    alert('The game has ended.');
+    // alert('The game has ended.');
+    console.log('The game has ended.');
   }
 
   this.init = function () {
