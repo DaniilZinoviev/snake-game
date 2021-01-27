@@ -8,15 +8,33 @@
 <body>
 
   <div class="site--wrap">
-    <header class="bg-dark">
-      <h1 class="container text-white text-center py-1 py-md-1">Snake Game</h1>
+    <header class=" mb-4">
+      <h1 class="container text-center py-1 py-md-1">Snake Game</h1>
     </header>
     
     <main class="container py-2">
   
-      <canvas id="canvas" width="500" height="400">
-        Please, update your browser!
-      </canvas>
+      <div class="game--wrap text-center">
+        <div class="game--canvas-wrap d-inline-block position-relative">
+          <div class="overlay game-screen game-screen--start">
+            <div class="content">
+              <h3 class="mb-3">
+                The snake game!
+              </h3>
+              <button class="btn btn-lg btn-outline-light js-btn--start">Start</button>
+            </div>
+          </div>
+          <div class="overlay game-screen game-screen--end">
+            <div class="content">
+              <h3 class="mb-3">Your score is {score}</h3>
+              <button class="btn btn-lg btn-outline-light js-btn--start">Restart</button>
+            </div>
+          </div>
+          <canvas id="game--canvas" width="500" height="400">
+            Please, update your browser!
+          </canvas>
+        </div>
+      </div>
   
     </main>
   

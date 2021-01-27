@@ -30,43 +30,29 @@ function Game(opts) {
 
   this.init = function () {
     if (this.initialized) {
-      return console.log("The game was initialized yet!");
+      return console.error("The game was initialized yet!");
     }
-    this.start();
-
+    this.setGameState('init');
     window.addEventListener("keydown", (e) => {
       this.updateSnakeDirection(e.code);
     });
-    console.log("Game init has been done.");
     this.initialized = true;
+    console.log("The game is initialized.");
   };
+
   this.update = function () {
     // Create apples
     if (this.apples.length === 0) {
       const [x, y] = this.getAppleRandomPosition();
-
       this.apples.push(new Apple({ x, y }));
     }
 
     // Update snake position
-    const next = this.snake.getNextTile();
-    if (canMoveThroughWalls) {
-      switch (true) {
-        case next.x > this.totalRows - 1:
-          next.x = 0;
-          break;
-        case next.x < 0:
-          next.x = this.totalRows;
-          break;
-        case next.y > this.totalCols - 1:
-          next.y = 0;
-          break;
-        case next.y < 0:
-          next.y = this.totalCols;
-          break;
-      }
-    }
-    this.totalRows, this.totalCols;
+    const next = this.snake.getNextTile(
+      this.totalRows,
+      this.totalCols,
+      canMoveThroughWalls
+    );
     this.snake.move(next, this.apples);
 
     // Check that snake can eat apples
@@ -80,7 +66,6 @@ function Game(opts) {
   };
 
   this.render = function () {
-    // console.log("run render");
     ctx.clearRect(0, 0, totalWidth, totalHeight);
     this.apples.forEach(({ x, y }) => {
       ctx.fillStyle = appleColor;
@@ -102,10 +87,12 @@ function Game(opts) {
   };
 
   this.start = function () {
-    console.log("Game init was started.");
+    this.snake = new Snake();
+    this.apples = [];
     this.interval = setInterval(() => this.tick(), gameSpeed);
     this.tick();
     document.body.classList.add("playing");
+    this.setGameState('play');
   };
 
   this.checkEndGame = function () {
@@ -134,6 +121,7 @@ function Game(opts) {
     console.log("The game has ended.");
     clearInterval(this.interval);
     document.body.classList.remove("playing");
+    this.setGameState('end');
   };
 
   this.getAppleRandomPosition = function () {
@@ -172,6 +160,10 @@ function Game(opts) {
       this.snake.moveY = y;
     }
   };
+
+  this.setGameState = function(state) {
+    document.body.setAttribute('data-gamestate', state);
+  }
 }
 
 export default Game;

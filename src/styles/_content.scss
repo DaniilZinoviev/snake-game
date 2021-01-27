@@ -2,6 +2,19 @@ body {
   &.playing {
     overflow: hidden;
   }
+  .game-screen {
+    display: none;
+  }
+  &[data-gamestate="init"] {
+    .game-screen--start {
+      display: flex;
+    }
+  }
+  &[data-gamestate="end"] {
+    .game-screen--end {
+      display: flex;
+    }
+  }
 }
 .site--wrap {
   min-height: 100vh;
@@ -11,10 +24,24 @@ body {
     flex-grow: 1;
   }
 }
-canvas {
-  margin: 0 auto;
-  display: block;
-  // border: 2px solid $canvas-border-color;
-  max-width: 100%;
-  box-shadow: 0 0 5px #000;
+
+.game--canvas-wrap {
+  line-height: 0;
+  .overlay {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  .game-screen {
+    align-items: center;
+    justify-content: center;
+    padding: 1em;
+    color: white;
+  }
+  canvas {
+    max-width: 100%;
+    box-shadow: 0 0 5px black;
+  }
 }
