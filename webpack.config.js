@@ -3,6 +3,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 exports.default = ({ mode }) => {
 
   return {
+    entry: {
+      game: './src/game.js',
+      demo: './src/demo.js'
+    },
+    devtool: 'inline-source-map',
+    output: {
+      filename: '[name].bundle.js',
+      path: __dirname + '/dist'
+    },
     mode: 'development',
     module: {
       rules: [

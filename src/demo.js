@@ -1,4 +1,7 @@
-import { Game } from "./classes";
+/**
+ * This is a "Demo" page code.
+ * I include some styles and initialize the Game with my options
+ */
 import "./styles/index.scss";
 
 const canvas = document.getElementById("game--canvas");
@@ -18,7 +21,11 @@ const options = {
 const game = new Game(options);
 game.init();
 
-const startButtons = document.querySelectorAll(".js-btn--start");
-startButtons.forEach((btn) =>
-  btn.addEventListener("click", () => game.start())
-);
+/**
+ * Buttons "Start" and "Reload"
+ */
+document.querySelectorAll(".js-btn--start").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    game.start();
+  });
+});
